@@ -7,10 +7,10 @@
   "author": "OpenAI Codex",
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "npm run build:electron && concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev": "npm run icons && npm run build:electron && concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "build": "node -e \"const fs=require('fs'),p='public/assets/backgrounds';fs.mkdirSync(p,{recursive:true});if(fs.existsSync('default.mp4'))fs.copyFileSync('default.mp4',p+'/default.mp4')\" && npm run build:renderer && npm run build:electron",
     "build:renderer": "vite build",
-    "build:electron": "tsc -p tsconfig.electron.json && node -e \"const fs=require('fs');if(fs.existsSync('electron/trayIcon.b64.txt'))fs.copyFileSync('electron/trayIcon.b64.txt','dist-electron/trayIcon.b64.txt')\"",
+    "build:electron": "tsc -p tsconfig.electron.json && node -e \"const fs=require('fs'),path=require('path');fs.mkdirSync('dist-electron',{recursive:true});if(fs.existsSync('electron/trayIcon.b64.txt'))fs.copyFileSync('electron/trayIcon.b64.txt',path.join('dist-electron','trayIcon.b64.txt'))\"",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts,.tsx",
     "start": "electron .",
@@ -21,6 +21,7 @@
   "build": {
     "appId": "com.mypresence.app",
     "productName": "MY Presence",
+    "copyright": "Copyright © 2025 MY Presence",
     "directories": {
       "output": "release"
     },
@@ -29,7 +30,8 @@
       "dist-electron/**",
       "default.mp4",
       "ic_app_logo.png",
-      "package.json"
+      "package.json",
+      "LICENSE.txt"
     ],
     "asar": true,
     "asarUnpack": [
@@ -39,13 +41,25 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "ic_app_logo.png"
+      "icon": "ic_app_logo.png",
+      "legalTrademarks": "MY Presence"
     },
     "nsis": {
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,
-      "runAfterFinish": true
+      "runAfterFinish": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MY Presence",
+      "installerIcon": "build/installerIcon.ico",
+      "uninstallerIcon": "build/uninstallerIcon.ico",
+      "installerHeaderIcon": "build/installerIcon.ico",
+      "license": "LICENSE.txt",
+      "displayLanguageSelector": false,
+      "menuCategory": true,
+      "warningsAsErrors": false,
+      "guid": "B8F1A2C3-D4E5-6789-ABCD-EF0123456789"
     }
   },
   "dependencies": {

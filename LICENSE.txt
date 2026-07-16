@@ -1,0 +1,26 @@
+MY PRESENCE SOFTWARE LICENSE AGREEMENT
+
+This is a legal agreement between you (the user) and MY Presence.
+
+1. GRANT OF LICENSE
+   This software is provided for personal use only. You may install and use
+   the software on any number of personal devices.
+
+2. RESTRICTIONS
+   You may not distribute, sell, or modify this software without explicit
+   written permission from the author.
+
+3. DISCLAIMER OF WARRANTY
+   This software is provided "as is" without warranty of any kind, express
+   or implied, including but not limited to the warranties of merchantability,
+   fitness for a particular purpose, and noninfringement.
+
+4. LIMITATION OF LIABILITY
+   In no event shall the author be liable for any damages arising from the
+   use of this software.
+
+5. DISCORD TERMS
+   You are responsible for complying with Discord's Terms of Service when
+   using this application.
+
+By installing and using this software, you agree to the terms above.

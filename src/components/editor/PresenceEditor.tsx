@@ -20,7 +20,6 @@ const SECTION_CONFIG = [
   { key: 'images', icon: Image, title: 'Artwork', description: 'Large and small images with hover text' },
   { key: 'buttons', icon: Link, title: 'Buttons', description: 'Up to two clickable buttons with custom labels' },
   { key: 'timer', icon: Clock3, title: 'Timer', description: 'Show elapsed time, countdown, or local time' },
-  { key: 'advanced', icon: ExternalLink, title: 'Advanced', description: 'Application ID, party, secrets, and internal notes' },
 ] as const;
 
 export function PresenceEditor({ profile }: Props) {
@@ -31,21 +30,25 @@ export function PresenceEditor({ profile }: Props) {
   const [editingSlot, setEditingSlot] = useState<ImageSlot | null>(null);
   const [uploadError, setUploadError] = useState('');
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    basics: true, status: false, images: false, buttons: false, timer: false, advanced: false
+    basics: true, status: false, images: false, buttons: false, timer: false
   });
 
   const toggleSection = (key: string) => setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const patch = <K extends keyof PresenceProfile>(key: K, value: PresenceProfile[K]) => {
-    const next = { ...profile, [key]: value, updatedAt: new Date().toISOString() };
-    updateProfile(profile.id, (current) => ({ ...current, [key]: value }));
-    resyncIfLive(next);
+    updateProfile(profile.id, (current) => {
+      const next = { ...current, [key]: value };
+      resyncIfLive(next);
+      return next;
+    });
   };
 
   const patchNested = <T,>(key: keyof PresenceProfile, value: T) => {
-    const next = { ...profile, [key]: value, updatedAt: new Date().toISOString() };
-    updateProfile(profile.id, (current) => ({ ...current, [key]: value }));
-    resyncIfLive(next);
+    updateProfile(profile.id, (current) => {
+      const next = { ...current, [key]: value };
+      resyncIfLive(next);
+      return next;
+    });
   };
 
   const resyncIfLive = (next: PresenceProfile) => {
@@ -123,6 +126,17 @@ export function PresenceEditor({ profile }: Props) {
   const setTimestampMode = (mode: TimestampMode) => patchNested('timestamps', { ...profile.timestamps, mode });
 
   const isLive = profile.status === 'live';
+  const goLive = () => {
+    updateProfile(profile.id, (current) => {
+      const next = { ...current, status: 'live' as const };
+      void discordPresenceService.start(next);
+      return next;
+    });
+  };
+  const stopLive = () => {
+    updateProfile(profile.id, (current) => ({ ...current, status: 'idle' as const }));
+    void discordPresenceService.stop();
+  };
 
   return (
     <div className="presence-editor">
@@ -132,7 +146,7 @@ export function PresenceEditor({ profile }: Props) {
           <span className="editor-subtitle">{profile.name || 'Untitled Profile'}</span>
         </div>
         <div className="editor-header-actions">
-          <button className="ui-button ui-button--ghost ui-button--sm" onClick={() => { patch('status', 'idle'); void discordPresenceService.stop(); }} disabled={!isLive}>
+          <button className="ui-button ui-button--ghost ui-button--sm" onClick={stopLive} disabled={!isLive}>
             <XCircle size={14} />
             <span>Stop</span>
           </button>
@@ -141,13 +155,13 @@ export function PresenceEditor({ profile }: Props) {
             <span>Clear</span>
           </button>
           {isLive ? (
-            <button className="ui-button ui-button--danger ui-button--md live-indicator" onClick={() => { patch('status', 'idle'); void discordPresenceService.stop(); }}>
+            <button className="ui-button ui-button--danger ui-button--md live-indicator" onClick={stopLive}>
               <Square size={14} />
               <span>Live - Click to Stop</span>
               <span className="live-pulse" />
             </button>
           ) : (
-            <button className="ui-button ui-button--primary ui-button--md" onClick={() => { patch('status', 'live'); void discordPresenceService.start({ ...profile, status: 'live' }); }}>
+            <button className="ui-button ui-button--primary ui-button--md" onClick={goLive}>
               <Play size={14} />
               <span>Go Live</span>
             </button>
@@ -294,49 +308,6 @@ export function PresenceEditor({ profile }: Props) {
               </div>
             )}
           </div>
-        );
-      case 'advanced':
-        return (
-          <>
-            <div className="editor-grid two">
-              <FormField label="Application ID">
-                <TextInput value={profile.applicationId} onChange={(e) => patch('applicationId', e.target.value)} placeholder="Discord Application ID" />
-              </FormField>
-              <FormField label="Instance">
-                <SwitchField label="" description={profile.instance ? 'Shows as a game instance' : 'Shows as a regular activity'} checked={profile.instance} onChange={(checked) => patch('instance', checked)} />
-              </FormField>
-            </div>
-            <div className="editor-grid two" style={{ marginTop: 6 }}>
-              <FormField label="Party ID">
-                <TextInput value={profile.party.id} onChange={(e) => patchNested('party', { ...profile.party, id: e.target.value })} placeholder="Party ID" />
-              </FormField>
-              <FormField label="Party Size">
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                  <input type="number" min={1} max={99} value={profile.party.currentSize} onChange={(e) => patchNested('party', { ...profile.party, currentSize: Number(e.target.value) })} style={{ width: 60, height: 32 }} className="input" />
-                  <span style={{ color: 'var(--text-tertiary)' }}> / </span>
-                  <input type="number" min={1} max={99} value={profile.party.maxSize} onChange={(e) => patchNested('party', { ...profile.party, maxSize: Number(e.target.value) })} style={{ width: 60, height: 32 }} className="input" />
-                </div>
-              </FormField>
-            </div>
-            <div className="editor-grid two" style={{ marginTop: 6 }}>
-              <FormField label="Join Secret">
-                <TextInput value={profile.secrets.join} onChange={(e) => patchNested('secrets', { ...profile.secrets, join: e.target.value })} placeholder="Join secret" />
-              </FormField>
-              <FormField label="Spectate Secret">
-                <TextInput value={profile.secrets.spectate} onChange={(e) => patchNested('secrets', { ...profile.secrets, spectate: e.target.value })} placeholder="Spectate secret" />
-              </FormField>
-            </div>
-            <div className="editor-grid two" style={{ marginTop: 6 }}>
-              <FormField label="Match Secret">
-                <TextInput value={profile.secrets.match} onChange={(e) => patchNested('secrets', { ...profile.secrets, match: e.target.value })} placeholder="Match secret" />
-              </FormField>
-            </div>
-            <div style={{ marginTop: 6 }}>
-              <FormField label="Notes">
-                <TextInput value={profile.notes} onChange={(e) => patch('notes', e.target.value)} placeholder="Internal notes…" style={{ minHeight: 60 }} />
-              </FormField>
-            </div>
-          </>
         );
       default:
         return null;
