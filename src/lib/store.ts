@@ -109,8 +109,10 @@ const createBlankProfile = (): PresenceProfile => {
     assets: {
       largeImage: '',
       largeText: '',
+      largeUrl: '',
       smallImage: '',
-      smallText: ''
+      smallText: '',
+      smallUrl: ''
     },
     timestamps: { mode: 'none' },
     party: {

@@ -9,8 +9,10 @@ export type ImageFit = 'fill' | 'fit';
 export type PresenceAssets = {
   largeImage: string;
   largeText: string;
+  largeUrl?: string;
   smallImage: string;
   smallText: string;
+  smallUrl?: string;
   // How the artwork sits inside Discord's square in our preview: 'fill' scales
   // to cover and center-crops (Discord's own behaviour); 'fit' shows the whole
   // image. Optional so profiles saved before this feature still load.

@@ -211,8 +211,8 @@ export function PresenceEditor({ profile }: Props) {
         return (
           <>
             <div className="asset-workbench">
-              <ImageUploader label="Large artwork" value={profile.assets.largeImage} uploading={uploading === 'largeImage'} disabled={uploading !== null} onUpload={() => handleUpload('largeImage')} onClear={() => setImage('largeImage', '')} onAdjust={() => setEditingSlot('largeImage')} hoverText={profile.assets.largeText} />
-              <ImageUploader label="Small artwork" value={profile.assets.smallImage} uploading={uploading === 'smallImage'} disabled={uploading !== null} onUpload={() => handleUpload('smallImage')} onClear={() => setImage('smallImage', '')} onAdjust={() => setEditingSlot('smallImage')} compact hoverText={profile.assets.smallText} />
+              <ImageUploader label="Large artwork" value={profile.assets.largeImage} uploading={uploading === 'largeImage'} disabled={uploading !== null} onUpload={() => handleUpload('largeImage')} onClear={() => setImage('largeImage', '')} onAdjust={() => setEditingSlot('largeImage')} hoverText={profile.assets.largeText} linkUrl={profile.assets.largeUrl} />
+              <ImageUploader label="Small artwork" value={profile.assets.smallImage} uploading={uploading === 'smallImage'} disabled={uploading !== null} onUpload={() => handleUpload('smallImage')} onClear={() => setImage('smallImage', '')} onAdjust={() => setEditingSlot('smallImage')} compact hoverText={profile.assets.smallText} linkUrl={profile.assets.smallUrl} />
             </div>
             {uploadError && <p className="editor-error">{uploadError}</p>}
             <p className="editor-hint"><Lightbulb size={12} /> Paste a Giphy, Tenor, Pinterest, or direct image link</p>
@@ -230,6 +230,14 @@ export function PresenceEditor({ profile }: Props) {
               </FormField>
               <FormField label="Small hover text">
                 <TextInput value={profile.assets.smallText} onChange={(e) => updateProfile(profile.id, (current) => { const next = { ...current, assets: { ...current.assets, smallText: e.target.value } }; resyncIfLive(next); return next; })} placeholder="e.g. Building a castle" />
+              </FormField>
+            </div>
+            <div className="editor-grid two" style={{ marginTop: 12 }}>
+              <FormField label="Large click URL">
+                <TextInput value={profile.assets.largeUrl ?? ''} onChange={(e) => updateProfile(profile.id, (current) => { const next = { ...current, assets: { ...current.assets, largeUrl: e.target.value } }; resyncIfLive(next); return next; })} placeholder="https://" />
+              </FormField>
+              <FormField label="Small click URL">
+                <TextInput value={profile.assets.smallUrl ?? ''} onChange={(e) => updateProfile(profile.id, (current) => { const next = { ...current, assets: { ...current.assets, smallUrl: e.target.value } }; resyncIfLive(next); return next; })} placeholder="https://" />
               </FormField>
             </div>
           </>
@@ -366,12 +374,14 @@ function EditorSection({ icon: Icon, title, description, isOpen, onToggle, child
   );
 }
 
-function ImageUploader({ label, value, uploading, disabled, onUpload, onClear, onAdjust, compact = false, hoverText }: {
-  label: string; value: string; uploading: boolean; disabled: boolean; onUpload: () => void; onClear: () => void; onAdjust: () => void; compact?: boolean; hoverText?: string;
+function ImageUploader({ label, value, uploading, disabled, onUpload, onClear, onAdjust, compact = false, hoverText, linkUrl }: {
+  label: string; value: string; uploading: boolean; disabled: boolean; onUpload: () => void; onClear: () => void; onAdjust: () => void; compact?: boolean; hoverText?: string; linkUrl?: string;
 }) {
   const isImageUrl = /^https?:\/\//i.test(value);
+  const hasLink = linkUrl && /^https?:\/\//i.test(linkUrl);
   const openLink = () => {
-    if (isImageUrl) window.open(value, '_blank', 'noopener');
+    if (hasLink) window.open(linkUrl, '_blank', 'noopener');
+    else if (isImageUrl) window.open(value, '_blank', 'noopener');
   };
   return (
     <div className={`asset-uploader ${compact ? 'compact' : ''}`}>

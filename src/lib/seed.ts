@@ -19,7 +19,7 @@ export const sampleProfiles: PresenceProfile[] = [
       { id: '1', label: '', url: '' },
       { id: '2', label: '', url: '' }
     ],
-    assets: { largeImage: '', largeText: '', smallImage: '', smallText: '' },
+    assets: { largeImage: '', largeText: '', largeUrl: '', smallImage: '', smallText: '', smallUrl: '' },
     timestamps: { start: now },
     party: { id: 'solo-session', currentSize: 1, maxSize: 4 },
     secrets: { join: '', spectate: '', match: '' },
@@ -41,7 +41,7 @@ export const sampleProfiles: PresenceProfile[] = [
       { id: '3', label: '', url: '' },
       { id: '4', label: '', url: '' }
     ],
-    assets: { largeImage: '', largeText: '', smallImage: '', smallText: '' },
+    assets: { largeImage: '', largeText: '', largeUrl: '', smallImage: '', smallText: '', smallUrl: '' },
     timestamps: { start: now, end: new Date(Date.now() + 3600000).toISOString() },
     party: { id: 'launch-room', currentSize: 3, maxSize: 8 },
     secrets: { join: 'join-secret', spectate: '', match: 'match-secret' },

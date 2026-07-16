@@ -1081,7 +1081,6 @@ input, textarea, select { font-family: inherit; font-size: 15px; color: var(--te
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  overflow: hidden;
   transition: all 0.2s var(--ease);
 }
 
