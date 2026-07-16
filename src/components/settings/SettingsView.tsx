@@ -1,4 +1,4 @@
-import { Bell, Cpu, Database, Gauge, MonitorCog, MoonStar, RefreshCcw, Shield, Videotape, Wifi, Zap } from 'lucide-react';
+import { Bell, Cpu, Database, Gauge, MonitorCog, MoonStar, RefreshCcw, Shield, Videotape, Wifi, Zap, MessageCircle, Globe, Github } from 'lucide-react';
 import { useAppStore } from '../../lib/store';
 import { SegmentedControl, SwitchField } from '../ui/forms';
 
@@ -47,6 +47,17 @@ export function SettingsView() {
       <SettingCard title="Performance" icon={Gauge} description="Optimize resource usage.">
         <SwitchField label="Hardware acceleration" description="Use GPU for video backgrounds and effects" checked={settings.hardwareAcceleration} onChange={(v) => updateSettings((s) => ({ ...s, hardwareAcceleration: v }))} />
         <SwitchField label="Pause video when hidden" description="Pause video backgrounds when window is minimized" checked={settings.videoPauseWhenHidden} onChange={(v) => updateSettings((s) => ({ ...s, videoPauseWhenHidden: v }))} />
+      </SettingCard>
+
+      <SettingCard title="Community" icon={MessageCircle} description="Join our community and stay connected.">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <button className="ui-button ui-button--outline" onClick={() => window.open('https://discord.gg/zeyBTArrF3', '_blank')} style={{ width: '100%', justifyContent: 'center' }}>
+            <MessageCircle size={14} /> Join Discord Server
+          </button>
+          <button className="ui-button ui-button--outline" onClick={() => window.open('https://github.com/theycallmearnav/My-Presence-Desktop-', '_blank')} style={{ width: '100%', justifyContent: 'center' }}>
+            <Github size={14} /> View on GitHub
+          </button>
+        </div>
       </SettingCard>
 
       <SettingCard title="Advanced" icon={Shield} description="Developer and power user options.">
