@@ -1,0 +1,188 @@
+import { getDefaultBackgroundVideo } from './defaultBackground';
+import type { AppSettings, AssetItem, PresenceProfile, Theme } from './types';
+
+const now = new Date().toISOString();
+
+export const sampleProfiles: PresenceProfile[] = [
+  {
+    id: 'focus-deep-work',
+    name: 'Deep Work',
+    favorite: true,
+    details: 'Designing the next release',
+    state: 'Heads down in the editor',
+    applicationId: '114455667788990011',
+    activityType: 'Playing',
+    instance: false,
+    status: 'live',
+    buttonsEnabled: true,
+    buttons: [
+      { id: '1', label: '', url: '' },
+      { id: '2', label: '', url: '' }
+    ],
+    assets: { largeImage: '', largeText: '', smallImage: '', smallText: '' },
+    timestamps: { start: now },
+    party: { id: 'solo-session', currentSize: 1, maxSize: 4 },
+    secrets: { join: '', spectate: '', match: '' },
+    notes: 'Main profile for focused work sessions.',
+    updatedAt: now
+  },
+  {
+    id: 'launch-mode',
+    name: 'Launch Mode',
+    favorite: false,
+    details: 'Shipping MY PRESENCE',
+    state: 'Polishing premium interactions',
+    applicationId: '998877665544332211',
+    activityType: 'Competing',
+    instance: true,
+    status: 'idle',
+    buttonsEnabled: true,
+    buttons: [
+      { id: '3', label: '', url: '' },
+      { id: '4', label: '', url: '' }
+    ],
+    assets: { largeImage: '', largeText: '', smallImage: '', smallText: '' },
+    timestamps: { start: now, end: new Date(Date.now() + 3600000).toISOString() },
+    party: { id: 'launch-room', currentSize: 3, maxSize: 8 },
+    secrets: { join: 'join-secret', spectate: '', match: 'match-secret' },
+    notes: 'Use during product launches and live demos.',
+    updatedAt: now
+  }
+];
+
+export const sampleAssets: AssetItem[] = [
+  { id: 'a1', name: 'studio-night', kind: 'large', accent: '#7C3AED', updatedAt: now },
+  { id: 'a2', name: 'spark-wave', kind: 'small', accent: '#06B6D4', updatedAt: now },
+  { id: 'a3', name: 'launch-grid', kind: 'large', accent: '#F97316', updatedAt: now },
+  { id: 'a4', name: 'pulse-ring', kind: 'small', accent: '#10B981', updatedAt: now },
+  { id: 'a5', name: 'soft-moon', kind: 'library', accent: '#EC4899', updatedAt: now }
+];
+
+export const defaultThemes: Theme[] = [
+  {
+    id: 'theme-dark-default',
+    name: 'Default Wallpaper',
+    backgroundType: 'video',
+    solidColor: '#0b0b0f',
+    gradientStart: '#6366f1',
+    gradientEnd: '#06b6d4',
+    gradientAngle: 135,
+    imageUrl: '',
+    videoUrl: getDefaultBackgroundVideo(),
+    accentColor: '#6366f1',
+    blurAmount: 0,
+    brightness: 100,
+    opacity: 100,
+    noiseOverlay: true,
+    glassStrength: 10,
+    cornerRadius: 12,
+    videoFit: 'fill',
+    overlayColor: '#000000',
+    overlayOpacity: 0,
+    muted: true,
+    volume: 50,
+    playbackSpeed: 1,
+    loop: true,
+    scope: 'app',
+    sortOrder: 0
+  },
+  {
+    id: 'theme-oled',
+    name: 'OLED Black',
+    backgroundType: 'solid',
+    solidColor: '#000000',
+    gradientStart: '#000000',
+    gradientEnd: '#0a0a0a',
+    gradientAngle: 135,
+    imageUrl: '',
+    videoUrl: '',
+    accentColor: '#a78bfa',
+    blurAmount: 0,
+    brightness: 100,
+    opacity: 100,
+    noiseOverlay: false,
+    glassStrength: 5,
+    cornerRadius: 16,
+    videoFit: 'fill',
+    overlayColor: '#000000',
+    overlayOpacity: 0,
+    muted: true,
+    volume: 50,
+    playbackSpeed: 1,
+    loop: true,
+    scope: 'app',
+    sortOrder: 1
+  },
+  {
+    id: 'theme-gradient',
+    name: 'Aurora',
+    backgroundType: 'gradient',
+    solidColor: '#0b0b0f',
+    gradientStart: '#0f0c29',
+    gradientEnd: '#302b63',
+    gradientAngle: 135,
+    imageUrl: '',
+    videoUrl: '',
+    accentColor: '#818cf8',
+    blurAmount: 0,
+    brightness: 100,
+    opacity: 100,
+    noiseOverlay: true,
+    glassStrength: 15,
+    cornerRadius: 12,
+    videoFit: 'fill',
+    overlayColor: '#000000',
+    overlayOpacity: 0,
+    muted: true,
+    volume: 50,
+    playbackSpeed: 1,
+    loop: true,
+    scope: 'app',
+    sortOrder: 2
+  },
+  {
+    id: 'theme-light',
+    name: 'Daylight',
+    backgroundType: 'solid',
+    solidColor: '#f5f5f0',
+    gradientStart: '#f5f5f0',
+    gradientEnd: '#e8e4e0',
+    gradientAngle: 135,
+    imageUrl: '',
+    videoUrl: '',
+    accentColor: '#6366f1',
+    blurAmount: 0,
+    brightness: 100,
+    opacity: 100,
+    noiseOverlay: false,
+    glassStrength: 8,
+    cornerRadius: 12,
+    videoFit: 'fill',
+    overlayColor: '#ffffff',
+    overlayOpacity: 0,
+    muted: true,
+    volume: 50,
+    playbackSpeed: 1,
+    loop: true,
+    scope: 'app',
+    sortOrder: 3
+  }
+];
+
+export const defaultSettings: AppSettings = {
+  appearance: 'dark',
+  launchOnStartup: false,
+  startMinimized: false,
+  minimizeToTray: true,
+  closeToTray: true,
+  restorePreviousSession: true,
+  autoReconnect: true,
+  reduceMotion: false,
+  notifications: true,
+  autoUpdates: true,
+  videoPauseWhenHidden: true,
+  hardwareAcceleration: true,
+  activeThemeId: 'theme-dark-default',
+  backgroundSource: '',
+  onboardingComplete: false
+};
