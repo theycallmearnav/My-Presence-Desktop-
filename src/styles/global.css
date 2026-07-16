@@ -307,7 +307,7 @@ input, textarea, select { font-family: inherit; font-size: 15px; color: var(--te
 .modal-actions { display: flex; gap: var(--space-1); justify-content: flex-end; }
 
 /* ─── Presence Editor (old pattern) ─── */
-.presence-editor { display: flex; flex-direction: column; gap: 4px; }
+.presence-editor { display: flex; flex-direction: column; gap: 4px; max-width: 800px; margin: 0 auto; }
 .editor-command-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; margin-bottom: 8px; }
 .editor-grid { display: grid; gap: var(--space-2); }
 .editor-grid.two { grid-template-columns: 1fr 1fr; }
